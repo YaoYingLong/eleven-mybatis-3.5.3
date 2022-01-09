@@ -89,15 +89,11 @@ import org.springframework.util.StringUtils;
  * @see ClassPathMapperScanner
  */
 /**
- * @vlog: 高于生活，源于生活
- * @desc: 类的描述:我们发现MapperScanerConfigurer实现了我们的 BeanDefinitionRegistryPostProcessor 这个类会在MapperScannerConfirurer
+ * @desc: 类的描述:eleven发现MapperScanerConfigurer实现了eleven BeanDefinitionRegistryPostProcessor 这个类会在MapperScannerConfirurer
  *        ioc容器org.springframework.context.support.AbstractApplicationContext#refresh
  *        方法中的invokeBeanFactoryPostProcessors 进行调用其postProcessBeanDefinitionRegistry(BeanDefinitionRegistry registry)
- *        方法来注册我们的bean定义信息 且BeanDefinitionRegistryPostProcessor调用顺序有限于BeanFactoryPostProcessor类型接口
+ *        方法来注册elevenbean定义信息 且BeanDefinitionRegistryPostProcessor调用顺序有限于BeanFactoryPostProcessor类型接口
  *        1:BeanDefinitionRegistryPostProcessor:所有的bean定义信息将要被加载到容器中，Bean实例还没有被初始化 2:所有的Bean定义信息已经加载到容器中，但是Bean实例还没有被初始化
- * @author: xsls
- * @createDate: 2019/8/21 13:50
- * @version: 1.0
  */
 public class MapperScannerConfigurer
     implements BeanDefinitionRegistryPostProcessor, InitializingBean, ApplicationContextAware, BeanNameAware {
@@ -344,18 +340,12 @@ public class MapperScannerConfigurer
    * @since 1.0.2
    */
   /**
-   * 方法实现说明: 我为我们IOC容器添加@MapperScan 注解扫描的所有的 mapper包下的bean定义
+   * 方法实现说明: 我为elevenIOC容器添加@MapperScan 注解扫描的所有的 mapper包下的bean定义
    *
-   * @MapperScan=====>为我们容器中添加MapperScannerConfigurer bean定义 然后我们发现MapperScannerConfigurer
-   * 实现了BeanDefinitionRegistryPostProcessor 所以在ioc容器refresh方法的时候会调用postProcessBeanDefinitionRegistry 来为我们容器
+   * @MapperScan=====>为eleven容器中添加MapperScannerConfigurer bean定义 然后eleven发现MapperScannerConfigurer
+   * 实现了BeanDefinitionRegistryPostProcessor 所以在ioc容器refresh方法的时候会调用postProcessBeanDefinitionRegistry 来为eleven容器
    * 中注册 @MapperScan 扫描的mapper包下的bean定义到容器中
-   *
-   * @author:xsls
-   * @param registry
-   *          bean定义注册器对象
-   * @return:
-   * @exception:
-   * @date:2019/8/21 13:55
+   * @param registry bean定义注册器对象
    */
   @Override
   public void postProcessBeanDefinitionRegistry(BeanDefinitionRegistry registry) {
@@ -368,7 +358,7 @@ public class MapperScannerConfigurer
 
     /**
      * 显示的new 一个ClassPathMapperScanner 包扫描器对象 这个对象是mybaits继承了spring的 ClassPathBeanDefinitionScanner
-     * 为我们扫描器指定@MapperScan属性
+     * 为eleven扫描器指定@MapperScan属性
      */
     ClassPathMapperScanner scanner = new ClassPathMapperScanner(registry);
     scanner.setAddToConfig(this.addToConfig);
@@ -390,24 +380,19 @@ public class MapperScannerConfigurer
      */
     scanner.registerFilters();
     /**
-     * 真正的去扫描我们@MapperScan指定的路径下的bean定义信息 先会去调用ClassPathMapperScanner.scan()方法
+     * 真正的去扫描eleven@MapperScan指定的路径下的bean定义信息 先会去调用ClassPathMapperScanner.scan()方法
      */
     scanner.scan(
         StringUtils.tokenizeToStringArray(this.basePackage, ConfigurableApplicationContext.CONFIG_LOCATION_DELIMITERS));
   }
 
   /**
-   * 方法实现说明:BeanDefinitionRegistries 接口早于BeanFactoryPostProcessors BeanFactoryPostProcessors：注册我们的bean定义
-   * BeanFactoryPostProcessors:修改我们的bean定义
-   *
-   * @author:xsls
-   * @return:
-   * @exception:
-   * @date:2019/8/21 14:00
+   * 方法实现说明:BeanDefinitionRegistries 接口早于BeanFactoryPostProcessors BeanFactoryPostProcessors：注册elevenbean定义
+   * BeanFactoryPostProcessors:修改elevenbean定义
    */
   private void processPropertyPlaceHolders() {
     /**
-     * 获取我们容器中的所有PropertyResourceConfigurer的组件 <bean id='propertyPlaceholderConfigurer' class=
+     * 获取eleven容器中的所有PropertyResourceConfigurer的组件 <bean id='propertyPlaceholderConfigurer' class=
      * "org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"> <properties name='locations'> <list>
      * <value>config/mybaits.properties</value> </list> </properties> </bean>
      *
@@ -415,8 +400,8 @@ public class MapperScannerConfigurer
      * <property name="basePackage" value="${basePackage}"/> <property name="processPropertyPlaceHolders" value="true">
      * 若这个为false的话,就不能解析${basePackage} </bean>
      *
-     * 终极奥义:因为postProcessBeanDefinitionRegistry 是为我们注册bean定义的,但是注册bean定义的是偶 需要解析${basepackaage}
-     * 但是我们PropertyResourceConfigurer类型的bean定义还没有实例化成bean对象 ，所以还不能提供解析${basepackaage}这个的能力，
+     * 终极奥义:因为postProcessBeanDefinitionRegistry 是为eleven注册bean定义的,但是注册bean定义的是偶 需要解析${basepackaage}
+     * 但是elevenPropertyResourceConfigurer类型的bean定义还没有实例化成bean对象 ，所以还不能提供解析${basepackaage}这个的能力，
      * 所有显示的设置processPropertyPlaceHolders为ture,就是想通过applicationContext.getBeansOfType(PropertyResourceConfigurer.class);
      * 提前吧PropertyResourceConfigurer组件实例化出来，从而来解析${basepackaage}
      *
@@ -433,16 +418,16 @@ public class MapperScannerConfigurer
           .getBeanDefinition(beanName);
 
       /**
-       * 因为PropertyResourceConfigurer类没有暴露任务的方法来处理我们的property placeholder substitution
-       * 说白了就是${basepackaage},有且只有提供一个BeanFactoryPostProcessor接口来处理我们的bean定义
+       * 因为PropertyResourceConfigurer类没有暴露任务的方法来处理elevenproperty placeholder substitution
+       * 说白了就是${basepackaage},有且只有提供一个BeanFactoryPostProcessor接口来处理elevenbean定义
        * 但是调用BeanFactoryPostProcessor.postProcessBeanFactory()方法需要一个beanFactory ,有些同学可以想到
-       * 从外面传入一个Ioc的容器进来，但是这样会提前破坏我们ioc容器 所以在这里就进行局部的new 出一个ioc容器,然后把mapperScannerBean注册到临时的ioc容器中
+       * 从外面传入一个Ioc的容器进来，但是这样会提前破坏elevenioc容器 所以在这里就进行局部的new 出一个ioc容器,然后把mapperScannerBean注册到临时的ioc容器中
        */
       DefaultListableBeanFactory factory = new DefaultListableBeanFactory();
       factory.registerBeanDefinition(beanName, mapperScannerBean);
 
       /**
-       * 这个时候，我们就可以大胆放心的处理临时的ioc容器factory 中的bean定义(说白了就是这个mapperScannerBean)
+       * 这个时候，eleven就可以大胆放心的处理临时的ioc容器factory 中的bean定义(说白了就是这个mapperScannerBean)
        */
       for (PropertyResourceConfigurer prc : prcs.values()) {
         prc.postProcessBeanFactory(factory);

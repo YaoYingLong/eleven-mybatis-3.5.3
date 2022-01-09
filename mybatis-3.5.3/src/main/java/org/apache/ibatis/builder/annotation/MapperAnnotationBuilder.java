@@ -127,20 +127,18 @@ public class MapperAnnotationBuilder {
     String resource = type.toString();
     // 是否已经解析mapper接口对应的xml
     if (!configuration.isResourceLoaded(resource)) {
-      // 根据mapper接口名获取 xml文件并解析，  解析<mapper></mapper>里面所有东西放到configuration
+      // 根据mapper接口名获取xml文件并解析，解析<mapper></mapper>里面所有东西放到configuration
       loadXmlResource();
       // 添加已解析的标记
       configuration.addLoadedResource(resource);
       assistant.setCurrentNamespace(type.getName());
       parseCache();
       parseCacheRef();
-      // 获取所有方法 看是不是用了注解
+      // 获取所有方法看是不是用了注解
       Method[] methods = type.getMethods();
       for (Method method : methods) {
-        try {
-          // issue #237
-          if (!method.isBridge()) {
-            // 是不是用了注解  用了注解会将注解解析成MappedStatement
+        try {// issue #237
+          if (!method.isBridge()) {// 是不是用了注解  用了注解会将注解解析成MappedStatement
             parseStatement(method);
           }
         } catch (IncompleteElementException e) {

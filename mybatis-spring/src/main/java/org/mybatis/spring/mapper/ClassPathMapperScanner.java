@@ -183,14 +183,8 @@ public class ClassPathMapperScanner extends ClassPathBeanDefinitionScanner {
   }
 
   /**
-   * 方法实现说明:真正调用扫描我们@MapperScan指定的路径下的mapper包
-   *
-   * @author:xsls
-   * @param basePackages
-   *          :路径长度
-   * @return:
-   * @exception:
-   * @date:2019/8/21 17:27
+   * 方法实现说明:真正调用扫描eleven@MapperScan指定的路径下的mapper包
+   * @param basePackages :路径长度
    */
   @Override
   public Set<BeanDefinitionHolder> doScan(String... basePackages) {
@@ -200,16 +194,16 @@ public class ClassPathMapperScanner extends ClassPathBeanDefinitionScanner {
     Set<BeanDefinitionHolder> beanDefinitions = super.doScan(basePackages);
 
     /**
-     * 若扫描后 我们mapper包下有接口类,那么扫描bean定义就不会为空
+     * 若扫描后 elevenmapper包下有接口类,那么扫描bean定义就不会为空
      */
     if (beanDefinitions.isEmpty()) {
       LOGGER.warn(() -> "No MyBatis mapper was found in '" + Arrays.toString(basePackages)
           + "' package. Please check your configuration.");
     } else {
       /**
-       * 正是在这里mybaits做了一个很牛逼的功能，将spring的 的bean定义玩到极致(做了偷天换日的操作) 现在我们知道t通过父类扫描出来的mapper是接口类型的
-       * 比如我们com.eleven.mapper.UserMapper 他是一个接口 我们有基础的同学可能会知道我们的bean定义最终会被实例化成
-       * 对象，但是我们接口是不能实例化的,所以在processBeanDefinitions 来进行偷天换日
+       * 正是在这里mybaits做了一个很牛逼的功能，将spring的 的bean定义玩到极致(做了偷天换日的操作) 现在eleven知道t通过父类扫描出来的mapper是接口类型的
+       * 比如elevencom.eleven.mapper.UserMapper 他是一个接口 eleven有基础的同学可能会知道elevenbean定义最终会被实例化成
+       * 对象，但是eleven接口是不能实例化的,所以在processBeanDefinitions 来进行偷天换日
        */
       processBeanDefinitions(beanDefinitions);
     }
@@ -220,18 +214,18 @@ public class ClassPathMapperScanner extends ClassPathBeanDefinitionScanner {
   private void processBeanDefinitions(Set<BeanDefinitionHolder> beanDefinitions) {
     GenericBeanDefinition definition;
     /**
-     * 循环我们所有扫描出mapper的bean定义出来
+     * 循环eleven所有扫描出mapper的bean定义出来
      */
     for (BeanDefinitionHolder holder : beanDefinitions) {
-      // 获取我们的bean定义
+      // 获取elevenbean定义
       definition = (GenericBeanDefinition) holder.getBeanDefinition();
-      // 获取我们的bean定义的名称
+      // 获取elevenbean定义的名称
       String beanClassName = definition.getBeanClassName();
       LOGGER.debug(() -> "Creating MapperFactoryBean with name '" + holder.getBeanName() + "' and '" + beanClassName
           + "' mapperInterface");
 
       /**
-       * 进行真的偷天换日操作,也就是这二行代码是最最最最最重要的, 关乎我们 spring整合mybaits的整合 definition.setBeanClass(this.mapperFactoryBeanClass);
+       * 进行真的偷天换日操作,也就是这二行代码是最最最最最重要的, 关乎eleven spring整合mybaits的整合 definition.setBeanClass(this.mapperFactoryBeanClass);
        */
       // 设置ConstructorArgumentValues 会通过构造器初始化对象
       definition.getConstructorArgumentValues().addGenericArgumentValue(beanClassName); // issue #59
@@ -241,8 +235,8 @@ public class ClassPathMapperScanner extends ClassPathBeanDefinitionScanner {
       definition.getPropertyValues().add("addToConfig", this.addToConfig);
 
       /**
-       * 为我们的Mapper对象绑定我们的sqlSessionFactory引用 说白了就是我们的UserMapper(实际上是就是为我们的MapperFactoryBean添加一个sqlSessionFactory的属性)
-       * 然后SpringIoc在实例话我们的MapperFactoryBean的时候会经历populate()方法为我么你的UserMapper(MapperFactoryBean)
+       * 为elevenMapper对象绑定elevensqlSessionFactory引用 说白了就是elevenUserMapper(实际上是就是为elevenMapperFactoryBean添加一个sqlSessionFactory的属性)
+       * 然后SpringIoc在实例话elevenMapperFactoryBean的时候会经历populate()方法为我么你的UserMapper(MapperFactoryBean)
        * 的sqlSessionFactory赋值(调用set方法)
        */
       boolean explicitFactoryUsed = false;
@@ -255,9 +249,9 @@ public class ClassPathMapperScanner extends ClassPathBeanDefinitionScanner {
         explicitFactoryUsed = true;
       }
       /**
-       * 为我们的Mapper对象绑定我们的sqlSessionTemplate属性对象
-       * 说白了就是我们的UserMapper(实际上是就是为我们的MapperFactoryBean添加一个sqlSessionTemplate的属性)
-       * 然后SpringIoc在实例话我们的MapperFactoryBean的时候会经历populate()方法为我么你的UserMapper(MapperFactoryBean)
+       * 为elevenMapper对象绑定elevensqlSessionTemplate属性对象
+       * 说白了就是elevenUserMapper(实际上是就是为elevenMapperFactoryBean添加一个sqlSessionTemplate的属性)
+       * 然后SpringIoc在实例话elevenMapperFactoryBean的时候会经历populate()方法为我么你的UserMapper(MapperFactoryBean)
        * 的sqlSessionTemplate赋值(调用set方法)
        */
       if (StringUtils.hasText(this.sqlSessionTemplateBeanName)) {
@@ -279,22 +273,22 @@ public class ClassPathMapperScanner extends ClassPathBeanDefinitionScanner {
       }
 
       /**
-       * 设置UserMapper<MapperFactoryBean>定义的注入模型是通过 包扫描进来的，所有我们的默认注入模型就是
-       * AutowireCapableBeanFactory.AUTOWIRE_NO=0注入模型为0的时候,在这种情况下,若我们的MapperFactoryBean
-       * 的字段属性是永远自动注入不了值的因为字段上是没有 @AutoWired注解,所以我们需要把UserMapper<MapperFactoryBean> 的bean定义的注入模型给改成我们的 AUTOWIRE_BY_TYPE
-       * = 1,指定这个类型就是根据类型装配的话， 第一:我们的字段上不需要写@AutoWired注解，为啥? springioc会把当前UserMapper<MapperFactoryBean>中的setXXX(入参)
+       * 设置UserMapper<MapperFactoryBean>定义的注入模型是通过 包扫描进来的，所有eleven默认注入模型就是
+       * AutowireCapableBeanFactory.AUTOWIRE_NO=0注入模型为0的时候,在这种情况下,若elevenMapperFactoryBean
+       * 的字段属性是永远自动注入不了值的因为字段上是没有 @AutoWired注解,所以eleven需要把UserMapper<MapperFactoryBean> 的bean定义的注入模型给改成eleven AUTOWIRE_BY_TYPE
+       * = 1,指定这个类型就是根据类型装配的话， 第一:eleven字段上不需要写@AutoWired注解，为啥? springioc会把当前UserMapper<MapperFactoryBean>中的setXXX(入参)
        * 都会去解析一次入参,入参的值可定会从ioc容器中获取，然后调用setXXX方法给赋值好. 或 AUTOWIRE_By_Type=1
-       * 指定这个类型就是根据类型装配的话，第一:我们的字段上不需要写@AutoWired注解，为啥? springioc会把当前UserMapper<MapperFactoryBean>中的setXXX(入参)都会去解析一次入参,
+       * 指定这个类型就是根据类型装配的话，第一:eleven字段上不需要写@AutoWired注解，为啥? springioc会把当前UserMapper<MapperFactoryBean>中的setXXX(入参)都会去解析一次入参,
        * 入参的值可定会从ioc容器中获取，然后调用setXXX方法给赋值好.
        *
-       * ??????????????为啥在这里mybaits却要指定AUTOWIRE_BY_TYPE了？ 假设我们指定的是by_name的话， 那么他会通过setXXX(入参)的引用名去ioc容器中获取值，
-       * 假设我们自己配置的bean的名称不是相同的那么就会抛出异常
+       * ??????????????为啥在这里mybaits却要指定AUTOWIRE_BY_TYPE了？ 假设eleven指定的是by_name的话， 那么他会通过setXXX(入参)的引用名去ioc容器中获取值，
+       * 假设eleven自己配置的bean的名称不是相同的那么就会抛出异常
        *
        * public void setSqlSessionFactory(SqlSessionFactory sqlSessionFactory) { if (this.sqlSessionTemplate == null ||
        * sqlSessionFactory != this.sqlSessionTemplate.getSqlSessionFactory()) { this.sqlSessionTemplate
-       * =createSqlSessionTemplate(sqlSessionFactory); } } 所以在IOC实例化我们的UserMapper<MapperFactoryBean>的时候，会调用父类
+       * =createSqlSessionTemplate(sqlSessionFactory); } } 所以在IOC实例化elevenUserMapper<MapperFactoryBean>的时候，会调用父类
        * SqlSessionDaoSupport的setSqlSessionFactory(SqlSessionFactory sqlSessionFactory)
-       * 方法,而我们的sqlSessionFactory需要去容器中获取（也就是我们自己配置的SqlSessionFactoryBean）
+       * 方法,而elevensqlSessionFactory需要去容器中获取（也就是eleven自己配置的SqlSessionFactoryBean）
        *
        */
       if (!explicitFactoryUsed) {

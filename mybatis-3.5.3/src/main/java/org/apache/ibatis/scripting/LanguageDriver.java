@@ -27,10 +27,6 @@ import org.apache.ibatis.session.Configuration;
  * 类功能描述:语言解析接口,用来解析sql脚本语言的
  * 默认实现就是class org.apache.ibatis.scripting.xmltags.XMLLanguageDriver
  * 自定义的sql脚本语言驱动可以实现该接口
- * @author:xsls
- * @return:
- * @exception:
- * @date:2019/9/6 15:30
  */
 public interface LanguageDriver {
 
@@ -47,13 +43,10 @@ public interface LanguageDriver {
 
   /**
    * 方法实现说明:mybatis的参数处理器对象
-   * @author:xsls
    * @param mappedStatement:sql节点对象
    * @param parameterObject:参数对象
    * @param boundSql:原生的sql
    * @return: ParameterHandler参数处理器对象
-   * @exception:
-   * @date:2019/9/6 15:32
    */
   ParameterHandler createParameterHandler(MappedStatement mappedStatement, Object parameterObject, BoundSql boundSql);
 
@@ -68,13 +61,10 @@ public interface LanguageDriver {
    */
   /**
    * 方法实现说明:创建原生sql对象
-   * @author:xsls
    * @param configuration:mybaits的全局配置类
    * @param script:sql脚本
    * @param parameterType:参数类型
    * @return:SqlSource:用于保存的sql资源脚本对象
-   * @exception:
-   * @date:2019/9/6 15:33
    */
   SqlSource createSqlSource(Configuration configuration, XNode script, Class<?> parameterType);
 
@@ -89,13 +79,10 @@ public interface LanguageDriver {
    */
   /**
    * 方法实现说明:创建原生sql对象
-   * @author:xsls
    * @param configuration:mybaits的全局配置类
    * @param script:sql脚本
    * @param parameterType:参数类型
    * @return:SqlSource:用于保存的sql资源脚本对象
-   * @exception:
-   * @date:2019/9/6 15:33
    */
   SqlSource createSqlSource(Configuration configuration, String script, Class<?> parameterType);
 

@@ -54,11 +54,8 @@ public class DefaultSqlSessionFactory implements SqlSessionFactory {
 
   /**
    * 方法实现说明:从数据源中开启一个session
-   * @author:xsls
    * @param execType：执行器类型
    * @return: sqlSession
-   * @exception:
-   * @date:2019/9/8 21:38
    */
   @Override
   public SqlSession openSession(ExecutorType execType) {
@@ -101,12 +98,9 @@ public class DefaultSqlSessionFactory implements SqlSessionFactory {
 
   /**
    * 方法实现说明:从session中开启一个数据源
-   * @author:xsls
    * @param execType:执行器类型
    * @param level:隔离级别
    * @return:SqlSession
-   * @exception:
-   * @date:2019/9/9 13:38
    */
   private SqlSession openSessionFromDataSource(ExecutorType execType, TransactionIsolationLevel level, boolean autoCommit) {
     Transaction tx = null;

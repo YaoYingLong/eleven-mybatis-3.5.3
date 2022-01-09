@@ -40,13 +40,9 @@ public class XMLLanguageDriver implements LanguageDriver {
 
   /**
    * 方法实现说明:创建sqlSource对象
-   * @author:xsls
    * @param configuration:全局配置
    * @param script:脚本类型
    * @param parameterType:参数类型
-   * @return:
-   * @exception:
-   * @date:2019/9/6 16:10
    */
   @Override
   public SqlSource createSqlSource(Configuration configuration, XNode script, Class<?> parameterType) {

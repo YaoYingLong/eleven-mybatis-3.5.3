@@ -1,17 +1,17 @@
 /**
- *    Copyright ${license.git.copyrightYears} the original author or authors.
- *
- *    Licensed under the Apache License, Version 2.0 (the "License");
- *    you may not use this file except in compliance with the License.
- *    You may obtain a copy of the License at
- *
- *       http://www.apache.org/licenses/LICENSE-2.0
- *
- *    Unless required by applicable law or agreed to in writing, software
- *    distributed under the License is distributed on an "AS IS" BASIS,
- *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *    See the License for the specific language governing permissions and
- *    limitations under the License.
+ * Copyright ${license.git.copyrightYears} the original author or authors.
+ * <p>
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.apache.ibatis.builder.xml;
 
@@ -76,8 +76,8 @@ public class XMLConfigBuilder extends BaseBuilder {
   /**
    * 创建一个用于解析xml配置的构建器对象
    *
-   * @param inputStream              传入进来的xml的配置
-   * @param environment              环境变量
+   * @param inputStream            传入进来的xml的配置
+   * @param environment            环境变量
    * @param props:用于保存从xml中解析出来的属性
    */
   public XMLConfigBuilder(InputStream inputStream, String environment, Properties props) {
@@ -122,10 +122,6 @@ public class XMLConfigBuilder extends BaseBuilder {
    * 方法实现说明:解析mybatis-config.xml的 configuration节点
    *
    * @param root:configuration节点对象
-   * @author:xsls
-   * @return:
-   * @exception:
-   * @date:2019/8/30 15:57
    */
   private void parseConfiguration(XNode root) {
     try {
@@ -188,75 +184,70 @@ public class XMLConfigBuilder extends BaseBuilder {
       objectFactoryElement(root.evalNode("objectFactory"));
       objectWrapperFactoryElement(root.evalNode("objectWrapperFactory"));
       reflectorFactoryElement(root.evalNode("reflectorFactory"));
-      // 设置settings 和默认值
+      // 设置settings和默认值
       settingsElement(settings);
       // read it after objectFactory and objectWrapperFactory issue #631
 
       /**
        * 解析mybatis环境
-       <environments default="dev">
-       <environment id="dev">
-       <transactionManager type="JDBC"/>
-       <dataSource type="POOLED">
-       <property name="driver" value="${jdbc.driver}"/>
-       <property name="url" value="${jdbc.url}"/>
-       <property name="username" value="root"/>
-       <property name="password" value="Zw726515"/>
-       </dataSource>
-       </environment>
-
-       <environment id="test">
-       <transactionManager type="JDBC"/>
-       <dataSource type="POOLED">
-       <property name="driver" value="${jdbc.driver}"/>
-       <property name="url" value="${jdbc.url}"/>
-       <property name="username" value="root"/>
-       <property name="password" value="123456"/>
-       </dataSource>
-       </environment>
-       </environments>
+       *  <environments default="dev">
+       *  <environment id="dev">
+       *  <transactionManager type="JDBC"/>
+       *  <dataSource type="POOLED">
+       *  <property name="driver" value="${jdbc.driver}"/>
+       *  <property name="url" value="${jdbc.url}"/>
+       *  <property name="username" value="root"/>
+       *  <property name="password" value="Zw726515"/>
+       *  </dataSource>
+       *  </environment>
+       *
+       *  <environment id="test">
+       *  <transactionManager type="JDBC"/>
+       *  <dataSource type="POOLED">
+       *  <property name="driver" value="${jdbc.driver}"/>
+       *  <property name="url" value="${jdbc.url}"/>
+       *  <property name="username" value="root"/>
+       *  <property name="password" value="123456"/>
+       *  </dataSource>
+       *  </environment>
+       *  </environments>
        *  解析到：org.apache.ibatis.session.Configuration#environment
-       *  在集成spring情况下由 spring-mybatis提供数据源 和事务工厂
+       *  在集成spring情况下由spring-mybatis提供数据源和事务工厂
        */
       environmentsElement(root.evalNode("environments"));
       /**
        * 解析数据库厂商
-       *     <databaseIdProvider type="DB_VENDOR">
-       <property name="SQL Server" value="sqlserver"/>
-       <property name="DB2" value="db2"/>
-       <property name="Oracle" value="oracle" />
-       <property name="MySql" value="mysql" />
-       </databaseIdProvider>
+       * <databaseIdProvider type="DB_VENDOR">
+       * <property name="SQL Server" value="sqlserver"/>
+       * <property name="DB2" value="db2"/>
+       * <property name="Oracle" value="oracle" />
+       * <property name="MySql" value="mysql" />
+       * </databaseIdProvider>
        *  解析到：org.apache.ibatis.session.Configuration#databaseId
        */
       databaseIdProviderElement(root.evalNode("databaseIdProvider"));
       /**
        * 解析类型处理器节点
        * <typeHandlers>
-       <typeHandler handler="org.mybatis.example.ExampleTypeHandler"/>
-       </typeHandlers>
-       解析到：org.apache.ibatis.session.Configuration#typeHandlerRegistry.typeHandlerMap
+       * <typeHandler handler="org.mybatis.example.ExampleTypeHandler"/>
+       * </typeHandlers>
+       * 解析到：org.apache.ibatis.session.Configuration#typeHandlerRegistry.typeHandlerMap
        */
       typeHandlerElement(root.evalNode("typeHandlers"));
       /**
        * 最最最最最重要的就是解析mapper
-       *
-       resource：来注册class类路径下的
-       url:来指定磁盘下的或者网络资源的
-       class:
-       若注册Mapper不带xml文件的,这里可以直接注册
-       若注册的Mapper带xml文件的，需要把xml文件和mapper文件同名 同路径
-       -->
-       <mappers>
-       <mapper resource="mybatis/mapper/EmployeeMapper.xml"/>
-       <mapper class="com.eleven.mapper.DeptMapper"></mapper>
-
-
-       <package name="com.eleven.mapper"></package>
-       -->
-       </mappers>
+       * resource：来注册class类路径下的
+       * url:来指定磁盘下的或者网络资源的
+       * class:
+       * 若注册Mapper不带xml文件的，这里可以直接注册
+       * 若注册的Mapper带xml文件的，需要把xml文件和mapper文件同名同路径
+       * <mappers>
+       * <mapper resource="mybatis/mapper/EmployeeMapper.xml"/>
+       * <mapper class="com.eleven.mapper.DeptMapper"></mapper>
+       * <package name="com.eleven.icode.mapper"></package>
+       * </mappers>
        * package 1.解析mapper接口 解析到：org.apache.ibatis.session.Configuration#mapperRegistry.knownMappers
-       2.
+       * 2.
        */
       mapperElement(root.evalNode("mappers"));
     } catch (Exception e) {
@@ -504,10 +495,6 @@ public class XMLConfigBuilder extends BaseBuilder {
    * 方法实现说明
    *
    * @param parent:mappers
-   * @author:xsls
-   * @return:
-   * @exception:
-   * @date:2019/8/30 16:32
    */
   private void mapperElement(XNode parent) throws Exception {
     if (parent != null) {
@@ -517,32 +504,26 @@ public class XMLConfigBuilder extends BaseBuilder {
       for (XNode child : parent.getChildren()) {
         /**
          * 判断mapper是不是通过批量注册的
-         * <package name="com.eleven.mapper"></package>
+         * <package name="com.eleven.icode.mapper"></package>
          */
         if ("package".equals(child.getName())) {
           String mapperPackage = child.getStringAttribute("name");
           configuration.addMappers(mapperPackage);
         } else {
           /**
-           * 判断从classpath下读取mapper
-           * <mapper resource="mybatis/mapper/EmployeeMapper.xml"/>
+           * 判断从classpath下读取mapper：<mapper resource="mybatis/mapper/EmployeeMapper.xml"/>
            */
           String resource = child.getStringAttribute("resource");
           /**
-           * 判断是不是从网络资源读取(或者本地磁盘得)
-           * <mapper url="D:/mapper/EmployeeMapper.xml"/>
+           * 判断是不是从网络资源读取(或者本地磁盘得)：<mapper url="D:/mapper/EmployeeMapper.xml"/>
            */
           String url = child.getStringAttribute("url");
           /**
-           * 解析这种类型(要求接口和xml在同一个包下)
-           * <mapper class="com.eleven.mapper.DeptMapper"></mapper>
-           *
+           * 解析这种类型(要求接口和xml在同一个包下)：<mapper class="com.eleven.icode.mapper.DeptMapper"></mapper>
            */
           String mapperClass = child.getStringAttribute("class");
-
           /**
-           * 得mappers节点只配置了
-           * <mapper resource="mybatis/mapper/EmployeeMapper.xml"/>
+           * 得mappers节点只配置了：<mapper resource="mybatis/mapper/EmployeeMapper.xml"/>
            */
           if (resource != null && url == null && mapperClass == null) {
             ErrorContext.instance().resource(resource);
@@ -551,7 +532,7 @@ public class XMLConfigBuilder extends BaseBuilder {
              */
             InputStream inputStream = Resources.getResourceAsStream(resource);
             /**
-             * 创建读取XmlMapper构建器对象,用于来解析mapper.xml文件
+             * 创建读取XmlMapper构建器对象，用于来解析mapper.xml文件
              */
             XMLMapperBuilder mapperParser = new XMLMapperBuilder(inputStream, configuration, resource, configuration.getSqlFragments());
             /**

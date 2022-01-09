@@ -1,24 +1,19 @@
 /**
- *    Copyright ${license.git.copyrightYears} the original author or authors.
- *
- *    Licensed under the Apache License, Version 2.0 (the "License");
- *    you may not use this file except in compliance with the License.
- *    You may obtain a copy of the License at
- *
- *       http://www.apache.org/licenses/LICENSE-2.0
- *
- *    Unless required by applicable law or agreed to in writing, software
- *    distributed under the License is distributed on an "AS IS" BASIS,
- *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *    See the License for the specific language governing permissions and
- *    limitations under the License.
+ * Copyright ${license.git.copyrightYears} the original author or authors.
+ * <p>
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.apache.ibatis.scripting.xmltags;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import org.apache.ibatis.builder.BaseBuilder;
 import org.apache.ibatis.builder.BuilderException;
@@ -28,6 +23,11 @@ import org.apache.ibatis.scripting.defaults.RawSqlSource;
 import org.apache.ibatis.session.Configuration;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Clinton Begin
@@ -68,22 +68,19 @@ public class XMLScriptBuilder extends BaseBuilder {
      * 递归解析  selectById这个sql元素会解析成
      *    1层  MixedSqlNode <SELECT>
      *    2层  WhereSqlNode <WHERE>
-     *    2层  IfSqlNode <IF>
-     *       test="条件表达式"
-     *
+     *    2层  IfSqlNode <IF> test="条件表达式"
      *  contexts= sql语句分： 1.TextSqlNode 带${}    2.StaticTextSqlNode
      */
     MixedSqlNode rootSqlNode = parseDynamicTags(context);
     SqlSource sqlSource;
-    if (isDynamic) {
-      // 动态Sql源
+    if (isDynamic) {// 动态Sql源
       sqlSource = new DynamicSqlSource(configuration, rootSqlNode);
-    } else {
-      // 静态Sql源， 它会在这里解析
+    } else {// 静态Sql源， 它会在这里解析
       sqlSource = new RawSqlSource(configuration, rootSqlNode, parameterType);
     }
     return sqlSource;
   }
+
   // 解析${} 和 动态节点
   protected MixedSqlNode parseDynamicTags(XNode node) {
     List<SqlNode> contents = new ArrayList<>();

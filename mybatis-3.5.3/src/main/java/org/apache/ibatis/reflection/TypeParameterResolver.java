@@ -1,28 +1,21 @@
 /**
- *    Copyright ${license.git.copyrightYears} the original author or authors.
- *
- *    Licensed under the Apache License, Version 2.0 (the "License");
- *    you may not use this file except in compliance with the License.
- *    You may obtain a copy of the License at
- *
- *       http://www.apache.org/licenses/LICENSE-2.0
- *
- *    Unless required by applicable law or agreed to in writing, software
- *    distributed under the License is distributed on an "AS IS" BASIS,
- *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *    See the License for the specific language governing permissions and
- *    limitations under the License.
+ * Copyright ${license.git.copyrightYears} the original author or authors.
+ * <p>
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.apache.ibatis.reflection;
 
-import java.lang.reflect.Array;
-import java.lang.reflect.Field;
-import java.lang.reflect.GenericArrayType;
-import java.lang.reflect.Method;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
-import java.lang.reflect.TypeVariable;
-import java.lang.reflect.WildcardType;
+import java.lang.reflect.*;
 import java.util.Arrays;
 
 /**
@@ -32,7 +25,7 @@ public class TypeParameterResolver {
 
   /**
    * @return The field type as {@link Type}. If it has type parameters in the declaration,<br>
-   *         they will be resolved to the actual runtime {@link Type}s.
+   * they will be resolved to the actual runtime {@link Type}s.
    */
   public static Type resolveFieldType(Field field, Type srcType) {
     Type fieldType = field.getGenericType();
@@ -47,17 +40,14 @@ public class TypeParameterResolver {
   /**
    * 方法实现说明:解析返回值的类型
    * Type是Java语言中所有类型的父接口，包括
-        raw types(原始类型，包括类，枚举，接口，注解，数组（但不包括泛型数组）),
-        parameterized types（参数化类型，如Set<String>,Map<String,String>,Class<?>）,
-        array types(泛型数组和参数类型数组，如T[],List<String>[]),
-        type variables(类型变量，如T，K，V) and
-        primitive types（基本类型，如boolean,char,byte,short,int,long,float,double
-   * @author:xsls
+   * raw types(原始类型，包括类，枚举，接口，注解，数组（但不包括泛型数组）),
+   * parameterized types（参数化类型，如Set<String>,Map<String,String>,Class<?>）,
+   * array types(泛型数组和参数类型数组，如T[],List<String>[]),
+   * type variables(类型变量，如T，K，V) and
+   * primitive types（基本类型，如boolean,char,byte,short,int,long,float,double
+   *
    * @param method:调用方法对象
    * @param srcType:方法所主的原生接口
-   * @return:Type
-   * @exception:
-   * @date:2019/9/8 13:57
    */
   public static Type resolveReturnType(Method method, Type srcType) {
     /**
@@ -76,7 +66,7 @@ public class TypeParameterResolver {
 
   /**
    * @return The parameter types of the method as an array of {@link Type}s. If they have type parameters in the declaration,<br>
-   *         they will be resolved to the actual runtime {@link Type}s.
+   * they will be resolved to the actual runtime {@link Type}s.
    */
   public static Type[] resolveParamTypes(Method method, Type srcType) {
     Type[] paramTypes = method.getGenericParameterTypes();
@@ -91,16 +81,11 @@ public class TypeParameterResolver {
   /**
    * 方法实现说明:解析返回值类型
    * Type是Java语言中所有类型的父接口，包括
-        raw types(原始类型，包括类，枚举，接口，注解，数组（但不包括泛型数组）),
-        parameterized types（参数化类型，如Set<String>,Map<String,String>,Class<?>）,
-        array types(泛型数组和参数类型数组，如T[],List<String>[]),
-        type variables(类型变量，如T，K，V) and
-        primitive types（基本类型，如boolean,char,byte,short,int,long,float,double
-   * @author:xsls
-   * @param type
-   * @return:
-   * @exception:
-   * @date:2019/9/8 15:21
+   * raw types(原始类型，包括类，枚举，接口，注解，数组（但不包括泛型数组）),
+   * parameterized types（参数化类型，如Set<String>,Map<String,String>,Class<?>）,
+   * array types(泛型数组和参数类型数组，如T[],List<String>[]),
+   * type variables(类型变量，如T，K，V) and
+   * primitive types（基本类型，如boolean,char,byte,short,int,long,float,double
    */
   private static Type resolveType(Type type, Type srcType, Class<?> declaringClass) {
     /**
@@ -254,7 +239,7 @@ public class TypeParameterResolver {
         newParentArgs[i] = parentTypeArgs[i];
       }
     }
-    return noChange ? parentType : new ParameterizedTypeImpl((Class<?>)parentType.getRawType(), null, newParentArgs);
+    return noChange ? parentType : new ParameterizedTypeImpl((Class<?>) parentType.getRawType(), null, newParentArgs);
   }
 
   private TypeParameterResolver() {

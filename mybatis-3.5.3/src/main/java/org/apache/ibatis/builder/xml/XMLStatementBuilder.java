@@ -1,22 +1,19 @@
 /**
- *    Copyright ${license.git.copyrightYears} the original author or authors.
- *
- *    Licensed under the Apache License, Version 2.0 (the "License");
- *    you may not use this file except in compliance with the License.
- *    You may obtain a copy of the License at
- *
- *       http://www.apache.org/licenses/LICENSE-2.0
- *
- *    Unless required by applicable law or agreed to in writing, software
- *    distributed under the License is distributed on an "AS IS" BASIS,
- *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *    See the License for the specific language governing permissions and
- *    limitations under the License.
+ * Copyright ${license.git.copyrightYears} the original author or authors.
+ * <p>
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.apache.ibatis.builder.xml;
-
-import java.util.List;
-import java.util.Locale;
 
 import org.apache.ibatis.builder.BaseBuilder;
 import org.apache.ibatis.builder.MapperBuilderAssistant;
@@ -24,14 +21,13 @@ import org.apache.ibatis.executor.keygen.Jdbc3KeyGenerator;
 import org.apache.ibatis.executor.keygen.KeyGenerator;
 import org.apache.ibatis.executor.keygen.NoKeyGenerator;
 import org.apache.ibatis.executor.keygen.SelectKeyGenerator;
-import org.apache.ibatis.mapping.MappedStatement;
-import org.apache.ibatis.mapping.ResultSetType;
-import org.apache.ibatis.mapping.SqlCommandType;
-import org.apache.ibatis.mapping.SqlSource;
-import org.apache.ibatis.mapping.StatementType;
+import org.apache.ibatis.mapping.*;
 import org.apache.ibatis.parsing.XNode;
 import org.apache.ibatis.scripting.LanguageDriver;
 import org.apache.ibatis.session.Configuration;
+
+import java.util.List;
+import java.util.Locale;
 
 /**
  * @author Clinton Begin
@@ -48,14 +44,11 @@ public class XMLStatementBuilder extends BaseBuilder {
 
   /**
    * 方法实现说明:用于解析inset|select|update|delte节点的
-   * @author:xsls
+   *
    * @param configuration:mybtais的全局配置类
    * @param builderAssistant:MapperStatemnt构建的辅助类
-   * @param context:  inset|select|update|delte节点的对象
+   * @param context:                              inset|select|update|delte节点的对象
    * @param databaseId:数据库厂商Id
-   * @return:
-   * @exception:
-   * @date:2019/9/5 21:38
    */
   public XMLStatementBuilder(Configuration configuration, MapperBuilderAssistant builderAssistant, XNode context, String databaseId) {
     super(configuration);
@@ -65,93 +58,59 @@ public class XMLStatementBuilder extends BaseBuilder {
   }
 
   public void parseStatementNode() {
-    /**
-     * insert|delte|update|select 语句的sqlId
-     */
+    // insert|delte|update|select 语句的sqlId
     String id = context.getStringAttribute("id");
-    /**
-     * 判断insert|delte|update|select  节点是否配置了
-     * 数据库厂商标注
-     */
+    // 判断insert|delte|update|select 节点是否配置了数据库厂商标注
     String databaseId = context.getStringAttribute("databaseId");
-
-    /**
-     * 匹配当前的数据库厂商id是否匹配当前数据源的厂商id
-     */
+    // 匹配当前的数据库厂商id是否匹配当前数据源的厂商id
     if (!databaseIdMatchesCurrent(id, databaseId, this.requiredDatabaseId)) {
       return;
     }
-
-    /**
-     * 获得节点名称：select|insert|update|delete
-     */
+    // 获得节点名称：select|insert|update|delete
     String nodeName = context.getNode().getNodeName();
-    /**
-     * 根据nodeName 获得 SqlCommandType枚举
-     */
+    // 根据nodeName 获得 SqlCommandType枚举
     SqlCommandType sqlCommandType = SqlCommandType.valueOf(nodeName.toUpperCase(Locale.ENGLISH));
-    /**
-     * 判断是不是select语句节点
-     */
+    // 判断是不是select语句节点
     boolean isSelect = sqlCommandType == SqlCommandType.SELECT;
-    /**
-     *  获取flushCache属性
-     *  默认值为isSelect的反值：查询：默认flushCache=false   增删改：默认flushCache=true
-     */
+    // 获取flushCache属性，默认值为isSelect的反值：查询：默认flushCache=false 增删改：默认flushCache=true
     boolean flushCache = context.getBooleanAttribute("flushCache", !isSelect);
-    /**
-     * 获取useCache属性
-     * 默认值为isSelect：查询：默认useCache=true   增删改：默认useCache=false
-     */
+    // 获取useCache属性，默认值为isSelect：查询：默认useCache=true 增删改：默认useCache=false
     boolean useCache = context.getBooleanAttribute("useCache", isSelect);
-
-    /**
-     * resultOrdered:  是否需要处理嵌套查询结果 group by (使用极少）
-     * 可以将比如 30条数据的三组数据  组成一个嵌套的查询结果
-     */
+    // resultOrdered：是否需要处理嵌套查询结果group by (使用极少），可将比如30条数据的三组数据组成一个嵌套查询结果
     boolean resultOrdered = context.getBooleanAttribute("resultOrdered", false);
-
     /**
      * 解析sql公用片段
      *     <select id="qryEmployeeById" resultType="Employee" parameterType="int">
-              <include refid="selectInfo"></include>
-              employee where id=#{id}
-          </select>
-        将 <include refid="selectInfo"></include> 解析成sql语句 放在<select>Node的子节点中
+     *         <include refid="selectInfo"></include>
+     *         employee where id=#{id}
+     *     </select>
+     * 将 <include refid="selectInfo"></include> 解析成sql语句放在<select>Node的子节点中
      */
     // Include Fragments before parsing
     XMLIncludeTransformer includeParser = new XMLIncludeTransformer(configuration, builderAssistant);
     includeParser.applyIncludes(context.getNode());
-
-    /**
-     * 解析sql节点的参数类型
-     */
+    // 解析sql节点的参数类型
     String parameterType = context.getStringAttribute("parameterType");
     // 把参数类型字符串转化为class
     Class<?> parameterTypeClass = resolveClass(parameterType);
-
     /**
      * 查看sql是否支撑自定义语言
      * <delete id="delEmployeeById" parameterType="int" lang="elevenLang">
-     <settings>
-          <setting name="defaultScriptingLanguage" value="elevenLang"/>
-     </settings>
+     * <settings>
+     *  <setting name="defaultScriptingLanguage" value="elevenLang"/>
+     * </settings>
      */
     String lang = context.getStringAttribute("lang");
-    /**
-     * 获取自定义sql脚本语言驱动 默认:class org.apache.ibatis.scripting.xmltags.XMLLanguageDriver
-     */
+    // 获取自定义sql脚本语言驱动 默认:class org.apache.ibatis.scripting.xmltags.XMLLanguageDriver
     LanguageDriver langDriver = getLanguageDriver(lang);
-
     // Parse selectKey after includes and remove them.
     /**
      * 解析<insert 语句的的selectKey节点, 还记得吧，一般在oracle里面设置自增id
      */
     processSelectKeyNodes(id, parameterTypeClass, langDriver);
-
     // Parse the SQL (pre: <selectKey> and <include> were parsed and removed)
     /**
-     * insert语句 用于主键生成组件
+     * insert语句用于主键生成组件
      */
     KeyGenerator keyGenerator;
     /**
@@ -173,21 +132,19 @@ public class XMLStatementBuilder extends BaseBuilder {
     } else {
 
       /**
-       * 若配置了useGeneratedKeys 那么就去除useGeneratedKeys的配置值,
-       * 否者就看mybatis-config.xml配置文件中是配置了
+       * 若配置了useGeneratedKeys 那么就去除useGeneratedKeys的配置值，否者就看mybatis-config.xml配置文件中是配置了
        * <setting name="useGeneratedKeys" value="true"></setting> 默认是false
-       * 并且判断sql操作类型是否为insert
-       * 若是的话,那么使用的生成策略就是Jdbc3KeyGenerator.INSTANCE
+       * 并且判断sql操作类型是否为insert若是的话,那么使用的生成策略就是Jdbc3KeyGenerator.INSTANCE
        * 否则就是NoKeyGenerator.INSTANCE
        */
       keyGenerator = context.getBooleanAttribute("useGeneratedKeys",
-          configuration.isUseGeneratedKeys() && SqlCommandType.INSERT.equals(sqlCommandType))
-          ? Jdbc3KeyGenerator.INSTANCE : NoKeyGenerator.INSTANCE;
+        configuration.isUseGeneratedKeys() && SqlCommandType.INSERT.equals(sqlCommandType))
+        ? Jdbc3KeyGenerator.INSTANCE : NoKeyGenerator.INSTANCE;
     }
 
     /**
      * 通过class org.apache.ibatis.scripting.xmltags.XMLLanguageDriver来解析
-     * sql脚本对象  .  解析SqlNode. 注意， 只是解析成一个个的SqlNode， 并不会完全解析sql,因为这个时候参数都没确定，动态sql无法解析
+     * sql脚本对象解析SqlNode，注意只是解析成一个个的SqlNode，并不会完全解析sql，因为这个时候参数都没确定，动态sql无法解析
      */
     SqlSource sqlSource = langDriver.createSqlSource(configuration, context, parameterTypeClass);
     /**
@@ -236,9 +193,9 @@ public class XMLStatementBuilder extends BaseBuilder {
      * 为insert|delete|update|select节点构建成mappedStatment对象
      */
     builderAssistant.addMappedStatement(id, sqlSource, statementType, sqlCommandType,
-        fetchSize, timeout, parameterMap, parameterTypeClass, resultMap, resultTypeClass,
-        resultSetTypeEnum, flushCache, useCache, resultOrdered,
-        keyGenerator, keyProperty, keyColumn, databaseId, langDriver, resultSets);
+      fetchSize, timeout, parameterMap, parameterTypeClass, resultMap, resultTypeClass,
+      resultSetTypeEnum, flushCache, useCache, resultOrdered,
+      keyGenerator, keyProperty, keyColumn, databaseId, langDriver, resultSets);
   }
 
   private void processSelectKeyNodes(String id, Class<?> parameterTypeClass, LanguageDriver langDriver) {
@@ -283,9 +240,9 @@ public class XMLStatementBuilder extends BaseBuilder {
     SqlCommandType sqlCommandType = SqlCommandType.SELECT;
 
     builderAssistant.addMappedStatement(id, sqlSource, statementType, sqlCommandType,
-        fetchSize, timeout, parameterMap, parameterTypeClass, resultMap, resultTypeClass,
-        resultSetTypeEnum, flushCache, useCache, resultOrdered,
-        keyGenerator, keyProperty, keyColumn, databaseId, langDriver, null);
+      fetchSize, timeout, parameterMap, parameterTypeClass, resultMap, resultTypeClass,
+      resultSetTypeEnum, flushCache, useCache, resultOrdered,
+      keyGenerator, keyProperty, keyColumn, databaseId, langDriver, null);
 
     id = builderAssistant.applyCurrentNamespace(id, false);
 

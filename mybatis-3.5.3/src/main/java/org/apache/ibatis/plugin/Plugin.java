@@ -48,10 +48,7 @@ public class Plugin implements InvocationHandler {
     // 根据当前代理类型 和 @signature指定的type进行配对， 配对成功则可以代理
     Class<?>[] interfaces = getAllInterfaces(type, signatureMap);
     if (interfaces.length > 0) {
-      return Proxy.newProxyInstance(
-          type.getClassLoader(),
-          interfaces,
-          new Plugin(target, interceptor, signatureMap));
+      return Proxy.newProxyInstance(type.getClassLoader(), interfaces, new Plugin(target, interceptor, signatureMap));
     }
     return target;
   }

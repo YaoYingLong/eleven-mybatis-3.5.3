@@ -119,11 +119,8 @@ public abstract class BaseBuilder {
 
   /**
    * 方法实现说明:根据别名字符串解析出对应的class类型
-   * @author:xsls
    * @param alias:别名字符串
    * @return: 返回别名对应的class属性
-   * @exception:
-   * @date:2019/9/6 13:58
    */
   protected <T> Class<? extends T> resolveClass(String alias) {
     if (alias == null) {
@@ -167,11 +164,8 @@ public abstract class BaseBuilder {
 
   /**
    * 方法实现说明:真正的解析别名
-   * @author:xsls
    * @param alias:别名字符串对象
    * @return: 别名对应的class属性
-   * @exception:
-   * @date:2019/9/6 13:59
    */
   protected <T> Class<? extends T> resolveAlias(String alias) {
     /**

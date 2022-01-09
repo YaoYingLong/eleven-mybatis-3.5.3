@@ -24,7 +24,6 @@ public class App {
             try {
                 // 执行查询 底层执行jdbc
 //                User user = (User)session.selectOne("com.eleven.mapper.UserMapper.selectById", 1);
-
                 UserMapper mapper = session.getMapper(UserMapper.class);
                 System.out.println(mapper.getClass());
                 User user = mapper.selectById(1L, "t_user");
@@ -32,7 +31,7 @@ public class App {
                 System.out.println(user.getUserName());
             } catch (Exception e) {
                 e.printStackTrace();
-            }finally {
+            } finally {
                 session.close();
             }
         } catch (IOException e) {

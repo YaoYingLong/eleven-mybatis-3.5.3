@@ -72,12 +72,9 @@ public class DefaultSqlSession implements SqlSession {
 
   /**
    * 方法实现说明:查询当个对象
-   * @author:xsls
    * @param statement:statementId(com.eleven.mapper.EmployeeMapper.findOne)
    * @param parameter:调用时候的参数
    * @return: T 返回结果
-   * @exception:
-   * @date:2019/9/9 20:26
    */
   @Override
   public <T> T selectOne(String statement, Object parameter) {
@@ -166,13 +163,9 @@ public class DefaultSqlSession implements SqlSession {
 
   /**
    * 方法实现说明
-   * @author:xsls
    * @param statement: statementId
    * @param parameter:参数对象
    * @param rowBounds :mybiats的逻辑分页对象
-   * @return:
-   * @exception:
-   * @date:2019/9/9 20:33
    */
   @Override
   public <E> List<E> selectList(String statement, Object parameter, RowBounds rowBounds) {
@@ -360,11 +353,8 @@ public class DefaultSqlSession implements SqlSession {
 
   /**
    * 方法实现说明:包装集合类的参数
-   * @author:xsls
    * @param object:参数对象
    * @return:Object：包装后的对象
-   * @exception:
-   * @date:2019/9/9 20:36
    */
   private Object wrapCollection(final Object object) {
     //若参数类型是Collection

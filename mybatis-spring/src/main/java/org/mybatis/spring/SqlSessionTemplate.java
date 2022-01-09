@@ -83,12 +83,6 @@ public class SqlSessionTemplate implements SqlSession, DisposableBean {
 
   /**
    * 方法实现说明:mybatis整合spring的时候会调用该方法对sqlSessionTempalte进行赋值
-   *
-   * @author:xsls
-   * @param sqlSessionFactory
-   * @return:
-   * @exception:
-   * @date:2019/9/8 19:45
    */
   public SqlSessionTemplate(SqlSessionFactory sqlSessionFactory) {
     /**
@@ -114,14 +108,9 @@ public class SqlSessionTemplate implements SqlSession, DisposableBean {
 
   /**
    * 方法实现说明:真正会调该构造方法进行赋值初始化
-   *
-   * @author:xsls
    * @param sqlSessionFactory:工厂对象
    * @param executorType:执行器类型
    * @param exceptionTranslator:异常翻译器对象(MyBatisExceptionTranslator)
-   * @return:
-   * @exception:
-   * @date:2019/9/8 19:49
    */
   public SqlSessionTemplate(SqlSessionFactory sqlSessionFactory, ExecutorType executorType,
       PersistenceExceptionTranslator exceptionTranslator) {
@@ -133,7 +122,7 @@ public class SqlSessionTemplate implements SqlSession, DisposableBean {
     this.executorType = executorType;
     this.exceptionTranslator = exceptionTranslator;
     /**
-     * sqlSession代理对象 来调用我们的目标方法
+     * sqlSession代理对象 来调用eleven目标方法
      */
     this.sqlSessionProxy = (SqlSession) newProxyInstance(SqlSessionFactory.class.getClassLoader(),
         new Class[] { SqlSession.class }, new SqlSessionInterceptor());
@@ -164,13 +153,8 @@ public class SqlSessionTemplate implements SqlSession, DisposableBean {
    */
   /**
    * 方法实现说明:sqlSessionTemplate调用查询单个
-   *
-   * @author:xsls
    * @param statement:com.eleven.mapper.DeptMapper.findDeptByIdAndName
    * @param parameter:参数
-   * @return:
-   * @exception:
-   * @date:2019/9/9 19:23
    */
   @Override
   public <T> T selectOne(String statement, Object parameter) {
@@ -325,18 +309,14 @@ public class SqlSessionTemplate implements SqlSession, DisposableBean {
   }
 
   /**
-   * 方法实现说明:通过SqlSessionTeplate获取我们的this.sqlSessionFactory.getConfiguration()对象 来获取我们的Mapper对象
-   *
-   * @author:xsls
+   * 方法实现说明:通过SqlSessionTeplate获取eleventhis.sqlSessionFactory.getConfiguration()对象 来获取elevenMapper对象
    * @param type:mapper接口类型
    * @return: 返回接口Mapper的代理对象
-   * @exception:
-   * @date:2019/8/22 20:37
    */
   @Override
   public <T> T getMapper(Class<T> type) {
     /**
-     * 最终去sqlSessionFactory.Configuration.mapperRegistry去获取我们的Mapper对象
+     * 最终去sqlSessionFactory.Configuration.mapperRegistry去获取elevenMapper对象
      */
     return getConfiguration().getMapper(type, this);
   }
@@ -451,20 +431,20 @@ public class SqlSessionTemplate implements SqlSession, DisposableBean {
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
       /**
-       * 尝试从事务的线程变量中获取session,若没有获取到就直接新开一个session， 所以加事务可以缓存我们的sqlSession(也就是我们的SqlSessionTemplate对象)
+       * 尝试从事务的线程变量中获取session,若没有获取到就直接新开一个session， 所以加事务可以缓存elevensqlSession(也就是elevenSqlSessionTemplate对象)
        */
       SqlSession sqlSession = getSqlSession(SqlSessionTemplate.this.sqlSessionFactory,
           SqlSessionTemplate.this.executorType, SqlSessionTemplate.this.exceptionTranslator);
       try {
         /**
-         * 调用我们的目标方法代理的就是我们的session接口的方法 因为上一步返回的session是我们DefaultSqlSession对象, 所以在这里直接调用到我们的DefaultSqlSession的方法中
+         * 调用eleven目标方法代理的就是elevensession接口的方法 因为上一步返回的session是elevenDefaultSqlSession对象, 所以在这里直接调用到elevenDefaultSqlSession的方法中
          */
         Object result = method.invoke(sqlSession, args);
         if (!isSqlSessionTransactional(sqlSession, SqlSessionTemplate.this.sqlSessionFactory)) {
           // force commit even on non-dirty sessions because some databases require
           // a commit/rollback before calling close()
           /**
-           * 提交我们的session
+           * 提交elevensession
            */
           sqlSession.commit(true);
         }
@@ -474,7 +454,7 @@ public class SqlSessionTemplate implements SqlSession, DisposableBean {
         if (SqlSessionTemplate.this.exceptionTranslator != null && unwrapped instanceof PersistenceException) {
           // release the connection to avoid a deadlock if the translator is no loaded. See issue #22
           /**
-           * 抛异常 关闭我们的session
+           * 抛异常 关闭elevensession
            */
           closeSqlSession(sqlSession, SqlSessionTemplate.this.sqlSessionFactory);
           sqlSession = null;

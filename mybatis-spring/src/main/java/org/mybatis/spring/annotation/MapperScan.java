@@ -69,14 +69,10 @@ import org.springframework.context.annotation.Import;
  */
 
 /**
- * @vlog: 高于生活，源于生活
  * @desc: 类的描述:@MapperScan注解的作用相当于往容器添加了一个MapperScannerRegistrar的作用 相当以前spring整合mybaits配置了一个bean
  *        <bean class="org.mybatis.Spring.mapper.MapperScannerConfigurer">
  *        <property name="basePackage" value="${basePackage}"/>
  *        <property name="processPropertyPlaceHolders" value="true"> </bean>
- * @author: xsls
- * @createDate: 2019/8/21 15:30
- * @version: 1.0
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)

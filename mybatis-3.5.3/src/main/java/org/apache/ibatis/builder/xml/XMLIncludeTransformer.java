@@ -71,7 +71,7 @@ public class XMLIncludeTransformer {
       // <include的父节点=select 。  将<select>里面的<include>替换成 <sql> ，那<include>.getParentNode就为Null了
       source.getParentNode().replaceChild(toInclude, source);
       while (toInclude.hasChildNodes()) {
-        // 接下来<sql>.getParentNode()=select.  在<sql>的前面插入<sql> 中的sql语句   ,
+        // 接下来<sql>.getParentNode()=select.在<sql>的前面插入<sql> 中的sql语句   ,
         toInclude.getParentNode().insertBefore(toInclude.getFirstChild(), toInclude);
       }
       // <sql>.getParentNode()=select  , 移除select中的<sql> Node 。

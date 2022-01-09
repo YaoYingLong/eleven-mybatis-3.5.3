@@ -15,13 +15,6 @@
  */
 package org.apache.ibatis.session;
 
-/**
-* @vlog: 高于生活，源于生活
-* @desc: 类的描述:逻辑分页对象
-* @author: xsls
-* @createDate: 2019/9/9 20:31
-* @version: 1.0
-*/
 public class RowBounds {
   /* 默认offset是0**/
   public static final int NO_ROW_OFFSET = 0;

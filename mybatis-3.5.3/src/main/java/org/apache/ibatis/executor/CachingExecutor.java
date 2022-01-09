@@ -78,14 +78,10 @@ public class CachingExecutor implements Executor {
 
   /**
    * 方法实现说明:通过sql执行器对象执行sql
-   * @author:xsls
    * @param ms 用于封装一个个的insert|delete|update|select 对象
    * @param parameterObject:参数对象
    * @param rowBounds :mybaits的逻辑分页对象 TODO？？？？？
    * @param resultHandler:结果处理器对象
-   * @return:
-   * @exception:
-   * @date:2019/9/9 20:39
    */
   @Override
   public <E> List<E> query(MappedStatement ms, Object parameterObject, RowBounds rowBounds, ResultHandler resultHandler) throws SQLException {

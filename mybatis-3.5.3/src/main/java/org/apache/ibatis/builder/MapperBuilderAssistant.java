@@ -53,11 +53,7 @@ import org.apache.ibatis.type.TypeHandler;
  * @author Clinton Begin
  */
 /**
-* @vlog: 高于生活，源于生活
-* @desc: 类的描述:Mapper对象构建的辅助类
-* @author: xsls
-* @createDate: 2019/9/5 21:47
-* @version: 1.0
+* 类的描述:Mapper对象构建的辅助类
 */
 public class MapperBuilderAssistant extends BaseBuilder {
 
@@ -134,13 +130,8 @@ public class MapperBuilderAssistant extends BaseBuilder {
     }
   }
 
-  public Cache useNewCache(Class<? extends Cache> typeClass,
-      Class<? extends Cache> evictionClass,
-      Long flushInterval,
-      Integer size,
-      boolean readWrite,
-      boolean blocking,
-      Properties props) {
+  public Cache useNewCache(Class<? extends Cache> typeClass, Class<? extends Cache> evictionClass, Long flushInterval,
+      Integer size, boolean readWrite, boolean blocking, Properties props) {
     Cache cache = new CacheBuilder(currentNamespace)
         .implementation(valueOrDefault(typeClass, PerpetualCache.class))
         .addDecorator(valueOrDefault(evictionClass, LruCache.class))

@@ -85,13 +85,6 @@ import static org.springframework.util.StringUtils.tokenizeToStringArray;
  * @see #setConfigLocation
  * @see #setDataSource
  */
-/**
- * @vlog: 高于生活，源于生活
- * @desc: 类的描述:我是xsls构建的
- * @author: xsls
- * @createDate: 2019/8/20 20:36
- * @version: 1.0
- */
 public class SqlSessionFactoryBean
     implements FactoryBean<SqlSessionFactory>, InitializingBean, ApplicationListener<ApplicationEvent> {
 
@@ -113,7 +106,7 @@ public class SqlSessionFactoryBean
   private Resource[] mapperLocations;
 
   /**
-   * 保存我们的数据源接口
+   * 保存eleven数据源接口
    */
   private DataSource dataSource;
 
@@ -130,7 +123,7 @@ public class SqlSessionFactoryBean
   private SqlSessionFactoryBuilder sqlSessionFactoryBuilder = new SqlSessionFactoryBuilder();
 
   /**
-   * 我们的SqlSessionFactory对象
+   * elevenSqlSessionFactory对象
    */
   private SqlSessionFactory sqlSessionFactory;
 
@@ -521,13 +514,8 @@ public class SqlSessionFactoryBean
    * {@inheritDoc}
    */
   /**
-   * 方法实现说明:我们自己配置文件中配置了SqlSessionFactoryBean,我们发现配置了 该类实现了FactoryBean接口, 也实现了bean的生命周期回调接口InitializingBean
-   * 首先我们会调用生命周期的回调afterPropertiesSet() 就是我们的SqlSessionFactorybean已经调用了构造方法，已经调用了 我们的
-   *
-   * @author:xsls
-   * @return:
-   * @exception:
-   * @date:2019/8/23 19:33
+   * 方法实现说明:eleven自己配置文件中配置了SqlSessionFactoryBean,eleven发现配置了 该类实现了FactoryBean接口, 也实现了bean的生命周期回调接口InitializingBean
+   * 首先eleven会调用生命周期的回调afterPropertiesSet() 就是elevenSqlSessionFactorybean已经调用了构造方法，已经调用了 eleven
    */
   @Override
   public void afterPropertiesSet() throws Exception {
@@ -537,18 +525,13 @@ public class SqlSessionFactoryBean
         "Property 'configuration' and 'configLocation' can not specified with together");
 
     /**
-     * 通过sqlSessionFactoryBuilder来构建我们的sqlSessionFactory
+     * 通过sqlSessionFactoryBuilder来构建elevensqlSessionFactory
      */
     this.sqlSessionFactory = buildSqlSessionFactory();
   }
 
   /**
-   * 方法实现说明:构建我们的sqlSessionFactory的实例
-   *
-   * @author:xsls
-   * @return:
-   * @exception:
-   * @date:2019/8/23 20:06
+   * 方法实现说明:构建elevensqlSessionFactory的实例
    */
   protected SqlSessionFactory buildSqlSessionFactory() throws Exception {
 
@@ -573,7 +556,7 @@ public class SqlSessionFactoryBean
       }
     }
     /**
-     * 对configLocation进行非空判断，由于我们配置了SqlSessionFactoryBean的configLocation属性设置
+     * 对configLocation进行非空判断，由于eleven配置了SqlSessionFactoryBean的configLocation属性设置
      *
      * @Bean public SqlSessionFactoryBean sqlSessionFactory( ) throws IOException { SqlSessionFactoryBean factoryBean
      *       =new SqlSessionFactoryBean(); factoryBean.setDataSource(dataSource()); factoryBean.setConfigLocation(new
@@ -584,11 +567,11 @@ public class SqlSessionFactoryBean
 
     else if (this.configLocation != null) {
       /**
-       * 创建我们xml配置构建器对象,对mybatis/mybatis-config.xml配置文件进行解析 在这里以及把我们的mybaits-config.xml解析出要给document对象
+       * 创建elevenxml配置构建器对象,对mybatis/mybatis-config.xml配置文件进行解析 在这里以及把elevenmybaits-config.xml解析出要给document对象
        */
       xmlConfigBuilder = new XMLConfigBuilder(this.configLocation.getInputStream(), null, this.configurationProperties);
       /**
-       * 因为我们在创建XMLConfigBuilder的时候已经把我们的Configuration对象创建出来了
+       * 因为eleven在创建XMLConfigBuilder的时候已经把elevenConfiguration对象创建出来了
        */
       targetConfiguration = xmlConfigBuilder.getConfiguration();
     } else {
@@ -618,7 +601,7 @@ public class SqlSessionFactoryBean
     /**
      * typeAliasesPackage配置情况分为二种 1) 在mybaits-config.xml中配置了(mybatis的方式) <typeAliases>
      * <package name="com.eleven.entity"></package> </typeAliases>
-     * 2)在配置我们的SqlSessionFactoryBean的时候配置了(Spring整合mybatis的方式)
+     * 2)在配置elevenSqlSessionFactoryBean的时候配置了(Spring整合mybatis的方式)
      *
      * @Bean public SqlSessionFactoryBean sqlSessionFactory( ) throws IOException { SqlSessionFactoryBean factoryBean =
      *       new SqlSessionFactoryBean(); factoryBean.setDataSource(dataSource()); // 设置 MyBatis 配置文件路径
@@ -632,13 +615,13 @@ public class SqlSessionFactoryBean
      *       那么在Dept 就不需要写成com.eleven.entity了 <select id="findOne" parameterType="Integer" resultType="Dept"> select *
      *       from dept where id = #{id} </select>
      *
-     *       若我们在配置SqlSessionFactoryBean接口的时候配置了typeAliasesPackage 那么
-     *       这里才不会为空,同理,我们可以通过SqlSessionFactoryBean的typeAliasesSuperType 来控制哪些类的别名不支持
+     *       若eleven在配置SqlSessionFactoryBean接口的时候配置了typeAliasesPackage 那么
+     *       这里才不会为空,同理,eleven可以通过SqlSessionFactoryBean的typeAliasesSuperType 来控制哪些类的别名不支持
      */
     if (hasLength(this.typeAliasesPackage)) {
 
       /**
-       * 第一步:扫描我们typeAliasesPackage 包路径下的所有的实体类的class类型 第二步:进行过滤,然后注册到Configuration的别名映射器中
+       * 第一步:扫描eleventypeAliasesPackage 包路径下的所有的实体类的class类型 第二步:进行过滤,然后注册到Configuration的别名映射器中
        */
       scanClasses(this.typeAliasesPackage, this.typeAliasesSuperType).stream()
           .filter(clazz -> !clazz.isAnonymousClass()).filter(clazz -> !clazz.isInterface())
@@ -646,7 +629,7 @@ public class SqlSessionFactoryBean
     }
 
     /**
-     * 判断我们SqlSessionFactory是否配置了typeAliases(class类型) 一般typeAliasesPackage配置好了 就没有必要配置typeAliases
+     * 判断elevenSqlSessionFactory是否配置了typeAliases(class类型) 一般typeAliasesPackage配置好了 就没有必要配置typeAliases
      * 注册到Configuration的别名映射器中
      */
     if (!isEmpty(this.typeAliases)) {
@@ -657,7 +640,7 @@ public class SqlSessionFactoryBean
     }
 
     /**
-     * 把我们自定义的插件注册到我们的mybatis的配置类上 系统默认的插件 Executor (update, query, flushStatements, commit, rollback, getTransaction,
+     * 把eleven自定义的插件注册到elevenmybatis的配置类上 系统默认的插件 Executor (update, query, flushStatements, commit, rollback, getTransaction,
      * close, isClosed) ParameterHandler (getParameterObject, setParameters) ResultSetHandler (handleResultSets,
      * handleOutputParameters) StatementHandler (prepare, parameterize, batch, update, query)
      */
@@ -669,7 +652,7 @@ public class SqlSessionFactoryBean
     }
 
     /**
-     * 扫描我们自定义的类型处理器(用来处理我们的java类型和数据库类型的转化) 并且注册到我们的 targetConfiguration(批量注册)
+     * 扫描eleven自定义的类型处理器(用来处理elevenjava类型和数据库类型的转化) 并且注册到eleven targetConfiguration(批量注册)
      */
     if (hasLength(this.typeHandlersPackage)) {
       scanClasses(this.typeHandlersPackage, TypeHandler.class).stream().filter(clazz -> !clazz.isAnonymousClass())
@@ -678,7 +661,7 @@ public class SqlSessionFactoryBean
     }
 
     /**
-     * 通过配置<TypeHandlers></TypeHandlers>的形式来注册我们的类型处理器对象
+     * 通过配置<TypeHandlers></TypeHandlers>的形式来注册eleven类型处理器对象
      */
     if (!isEmpty(this.typeHandlers)) {
       Stream.of(this.typeHandlers).forEach(typeHandler -> {
@@ -719,7 +702,7 @@ public class SqlSessionFactoryBean
     if (xmlConfigBuilder != null) {
       try {
         /**
-         * 真正的解析我们的配置(mybatis-config.xml)的document对象
+         * 真正的解析eleven配置(mybatis-config.xml)的document对象
          */
         xmlConfigBuilder.parse();
         LOGGER.debug(() -> "Parsed configuration file: '" + this.configLocation + "'");
@@ -731,14 +714,14 @@ public class SqlSessionFactoryBean
     }
 
     /**
-     * 为我们的configuration设置一个环境变量
+     * 为elevenconfiguration设置一个环境变量
      */
     targetConfiguration.setEnvironment(new Environment(this.environment,
         this.transactionFactory == null ? new SpringManagedTransactionFactory() : this.transactionFactory,
         this.dataSource));
 
     /**
-     * 循环我们的mapper.xml文件
+     * 循环elevenmapper.xml文件
      */
     if (this.mapperLocations != null) {
       if (this.mapperLocations.length == 0) {
@@ -750,7 +733,7 @@ public class SqlSessionFactoryBean
           }
           try {
             /**
-             * 真正的循环我们的mapper.xml文件
+             * 真正的循环elevenmapper.xml文件
              */
             XMLMapperBuilder xmlMapperBuilder = new XMLMapperBuilder(mapperLocation.getInputStream(),
                 targetConfiguration, mapperLocation.toString(), targetConfiguration.getSqlFragments());
@@ -768,7 +751,7 @@ public class SqlSessionFactoryBean
     }
 
     /**
-     * 通过建造者模式构建我们的SqlSessionFactory对象 默认是DefaultSqlSessionFactory
+     * 通过建造者模式构建elevenSqlSessionFactory对象 默认是DefaultSqlSessionFactory
      */
     return this.sqlSessionFactoryBuilder.build(targetConfiguration);
   }
@@ -782,7 +765,7 @@ public class SqlSessionFactoryBean
       afterPropertiesSet();
     }
     /**
-     * 返回我们的sqlSessionFactory对象
+     * 返回elevensqlSessionFactory对象
      */
     return this.sqlSessionFactory;
   }
@@ -815,37 +798,31 @@ public class SqlSessionFactoryBean
   }
 
   /**
-   * 方法实现说明:来扫描我们的别名路径(就是我们实体类的路径)
-   *
-   * @author:xsls
-   * @param packagePatterns
-   *          :实体类所在的包
-   * @param assignableType
-   *          :支持的类型
+   * 方法实现说明:来扫描eleven别名路径(就是eleven实体类的路径)
+   * @param packagePatterns :实体类所在的包
+   * @param assignableType :支持的类型
    * @return: Set<Class<?>>
-   * @exception:
-   * @date:2019/8/25 16:54
    */
   private Set<Class<?>> scanClasses(String packagePatterns, Class<?> assignableType) throws IOException {
     Set<Class<?>> classes = new HashSet<>();
     /**
-     * 把我们的"com.eleven,com.eleven.XXX"转换成字符串数组
+     * 把eleven"com.eleven,com.eleven.XXX"转换成字符串数组
      */
     String[] packagePatternArray = tokenizeToStringArray(packagePatterns,
         ConfigurableApplicationContext.CONFIG_LOCATION_DELIMITERS);
     /**
-     * 循环我们的包路径
+     * 循环eleven包路径
      */
     for (String packagePattern : packagePatternArray) {
       /**
-       * 把包路径下的class解析成我们的Resouce数组
+       * 把包路径下的class解析成elevenResouce数组
        */
       Resource[] resources = RESOURCE_PATTERN_RESOLVER.getResources(ResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX
           + ClassUtils.convertClassNameToResourcePath(packagePattern) + "/**/*.class");
       for (Resource resource : resources) {
         try {
           /**
-           * 挨个解析成我们的class类型
+           * 挨个解析成elevenclass类型
            */
           ClassMetadata classMetadata = METADATA_READER_FACTORY.getMetadataReader(resource).getClassMetadata();
           Class<?> clazz = Resources.classForName(classMetadata.getClassName());

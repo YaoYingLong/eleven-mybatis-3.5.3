@@ -1,17 +1,17 @@
 /**
- *    Copyright ${license.git.copyrightYears} the original author or authors.
- *
- *    Licensed under the Apache License, Version 2.0 (the "License");
- *    you may not use this file except in compliance with the License.
- *    You may obtain a copy of the License at
- *
- *       http://www.apache.org/licenses/LICENSE-2.0
- *
- *    Unless required by applicable law or agreed to in writing, software
- *    distributed under the License is distributed on an "AS IS" BASIS,
- *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *    See the License for the specific language governing permissions and
- *    limitations under the License.
+ * Copyright ${license.git.copyrightYears} the original author or authors.
+ * <p>
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.apache.ibatis.binding;
 
@@ -43,14 +43,6 @@ import java.util.Optional;
  * @author Eduardo Macarron
  * @author Lasse Voss
  * @author Kazuki Shimizu
- */
-
-/**
- * @vlog: 高于生活，源于生活
- * @desc: 类的描述:用于封装的Mapper接口中的方法对象
- * @author: xsls
- * @createDate: 2019/9/6 21:46
- * @version: 1.0
  */
 public class MapperMethod {
   private final SqlCommand command; // 用于保存Mapper接口方法信息
@@ -251,10 +243,6 @@ public class MapperMethod {
      * @param configuration：mybatis的全局配置
      * @param mapperInterface:Mapper接口的class类型
      * @param method:方法对象
-     * @author:xsls
-     * @return:
-     * @exception:
-     * @date:2019/9/6 21:51
      */
     public SqlCommand(Configuration configuration, Class<?> mapperInterface, Method method) {
       final String methodName = method.getName(); //获取的方法的名称
@@ -292,10 +280,6 @@ public class MapperMethod {
      * @param methodName                       :方法名称
      * @param declaringClass:方法所在类的接口
      * @param configuration:mybatis的全局配置
-     * @author:xsls
-     * @return: MappedStatement
-     * @exception:
-     * @date:2019/9/8 13:29
      */
     private MappedStatement resolveMappedStatement(Class<?> mapperInterface, String methodName, Class<?> declaringClass, Configuration configuration) {
       String statementId = mapperInterface.getName() + "." + methodName; // 获取的sql对应的statmentId(com.eleven.mapper.DeptMapper.findDepts)
@@ -335,10 +319,6 @@ public class MapperMethod {
      * @param configuration:mybaits的全局配置类
      * @param mapperInterface:mapper接口的class
      * @param method:接口方法调用对象
-     * @author:xsls
-     * @return:
-     * @exception:
-     * @date:2019/9/8 13:45
      */
     public MethodSignature(Configuration configuration, Class<?> mapperInterface, Method method) {
       /**
@@ -377,10 +357,7 @@ public class MapperMethod {
      * 方法实现说明:通过的参数解析器解析方法的参数
      *
      * @param args:参数数组
-     * @author:xsls
      * @return: Object处理后的参数
-     * @exception:
-     * @date:2019/9/8 17:15
      */
     public Object convertArgsToSqlCommandParam(Object[] args) {
       return paramNameResolver.getNamedParams(args);

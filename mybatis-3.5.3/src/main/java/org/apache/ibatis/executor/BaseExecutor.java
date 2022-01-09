@@ -55,7 +55,6 @@ public abstract class BaseExecutor implements Executor {
   protected Transaction transaction;
   //执行权包装对象
   protected Executor wrapper;
-
   //延时加载队列
   protected ConcurrentLinkedQueue<DeferredLoad> deferredLoads;
   //一级缓存

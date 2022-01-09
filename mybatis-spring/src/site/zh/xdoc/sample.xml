@@ -72,12 +72,12 @@ public interface UserMapper {
   User getUser(String userId);
 
 }
-]]></source>			
-			<p> 
-			  注意，为了简单起见，我们使用了接口 <code>UserMapper.java</code>。在使用 DAO 的场景中，一个 DAO 类应该分为一个接口和一个实现类。回到这个例子里，准确来说，这个接口应该叫 <code>UserDao.java</code> 。
+]]></source>
+			<p>
+			  注意，为了简单起见，eleven使用了接口 <code>UserMapper.java</code>。在使用 DAO 的场景中，一个 DAO 类应该分为一个接口和一个实现类。回到这个例子里，准确来说，这个接口应该叫 <code>UserDao.java</code> 。
 			</p>
 			<p>
-				我们将看到不同的方法来发现映射器接口，将其注册到 Spring 并将其注入到服务 bean 中：
+				eleven将看到不同的方法来发现映射器接口，将其注册到 Spring 并将其注入到服务 bean 中：
 			</p>
 			<table>
 				<caption>测试场景</caption>
@@ -125,7 +125,7 @@ public interface UserMapper {
 							<code>SampleNamespaceTest</code>
 						</td>
 						<td>
-							演示如何使用自定义 MyBatis XML 命名空间. 
+							演示如何使用自定义 MyBatis XML 命名空间.
 						</td>
 					</tr>
           <tr>
